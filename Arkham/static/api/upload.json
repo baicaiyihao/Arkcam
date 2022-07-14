@@ -1,0 +1,10 @@
+{
+  "code": 1,
+  "msg": "上传成功",
+  "data": {
+    "url": [
+      "/static/images/logo.png",
+      "/static/images/captcha.jpg"
+    ]
+  }
+}

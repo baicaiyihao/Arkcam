@@ -1,0 +1,4 @@
+#邮件服务账号配置
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_FROM = ''

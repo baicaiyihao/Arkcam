@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+    <script type="text/javascript" src="../static/js/jquery-3.6.0.js"></script>
+{#    <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>#}
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                //进行接口数据请求
+                "url" : "/test/",
+                "type" : "get",
+                "data" : "",
+                "dataType" : "json",
+                //如果成功请求执行以下流程
+                "success" : function (json) {
+                    console.log(json);
+                    for (var i=0;i<json.length;i++){
+                        $("#divcontent").append("<li>"+"<h1>" + "name：" + json[i].name + "&nbsp;\n" +
+                            "\n" + "age：" + json[i].age + "</h1>" + "</li>");
+                    }
+                },
+                //如果是错误请求则执行以下报错提示
+                "error" : function (xmlhttp ,errorText) {
+                    console.log(xmlhttp);
+                    console.log(errorText);
+                    //http对应状态码输出不同的提示
+                    if(xmlhttp.status === 405){
+                        alert("请求无效");
+                    }
+                }
+                
+            })
+        })
+    </script>
+</head>
+<body>
+<input id="test1" type="button" value="加载">
+<div id="divcontent"></div>
+
+<!-- 直接引用过ajax进行前后端数据交互
+<script>
+    document.getElementById("test1").onclick = function () {
+        var xmlhttp;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }
+        console.log(xmlhttp);
+        //发送ajax请求
+        xmlhttp.open("GET","/test/",true);
+        xmlhttp.send();
+        //处理服务器响应
+        xmlhttp.onreadystatechange = function () {
+            //判断服务器响应是否正常
+            if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                //获取httpresponse内容
+                var t = xmlhttp.responseText;
+                //将内容回传到html的标签中
+                //document.getElementById('divcontent').innerHTML = t;
+                var json = JSON.parse(t);
+                var html = "";
+                html = html+"<h1>"+json.name+"</h1>";
+                html = html+"<h2>"+json.age+"</h2>";
+                document.getElementById('divcontent').innerHTML = html;
+
+            }
+        }
+    }
+</script>-->
+</body>
+</html>
