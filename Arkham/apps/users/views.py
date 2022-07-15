@@ -4,6 +4,7 @@ import re
 from django import http
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
 # Create your views here.
@@ -72,7 +73,7 @@ class LoginView(View):
             return http.JsonResponse({'code': 500, 'errmsg': '用户名或密码错误'})
 
 # 用户退出功能
-class LoginOutView(View):
+class LoginOutView(LoginRequiredMixin,View):
     def get(self, request):
         # 调用django自带的退出功能，执行了request.session.flush()
         logout(request)
@@ -80,7 +81,7 @@ class LoginOutView(View):
         return redirect(reverse('login'))
 
 # 用户信息,实现用户的邮箱验证和修改
-class userInfoView(View):
+class userInfoView(LoginRequiredMixin,View):
     # 访问用户信息将用户名，邮箱返回
     def get(self, request):
         # 获取登录用户名
@@ -115,7 +116,7 @@ class userInfoView(View):
         return http.JsonResponse({'code': 200, 'errmsg': 'email update success!'})
 
 # 修改密码功能
-class changepassView(View):
+class changepassView(LoginRequiredMixin,View):
     def post(self, request):
         p = json.loads(request.body)
         oldpass = p.get('oldpass')

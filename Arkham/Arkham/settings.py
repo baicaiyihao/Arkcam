@@ -254,4 +254,5 @@ EMAIL_PORT = '25'
 EMAIL_HOST_USER = email_config.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = email_config.EMAIL_HOST_PASSWORD
 
-
+# login_required()装饰器，重定向到登录页面
+LOGIN_URL = '/login/'

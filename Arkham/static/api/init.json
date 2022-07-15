@@ -67,7 +67,7 @@
           "child": [
             {
               "title": "子域名管理",
-              "href": "static/page/table.html",
+              "href": "static/page/editurls.html",
               "icon": "fa fa-indent",
               "target": "_self"
             }

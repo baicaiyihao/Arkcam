@@ -1,0 +1,39 @@
+<div class="layuimini-main" style="width: 600px;height: 500px">
+
+    <div class="layui-form layuimini-form">
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">子域名添加</label>
+            <div class="layui-input-block">
+                <textarea id="remark" style="width: 400px;height: 300px" class="layui-textarea" placeholder="格式：
+xx.xx.com
+xx.xx.com"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal"><a href="javascript:load()">确认保存</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/static/js/loadurls.js"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            $ = layui.$;
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        // 当前弹出层，防止ID被覆盖
+        var parentIndex = layer.index;
+
+    });
+</script>
