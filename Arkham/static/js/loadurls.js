@@ -19,7 +19,7 @@ function send(urls) {
         "dataType" : "json",
         //如果成功请求执行以下流程
         "success" : function (json) {
-            alert(json.errmsg);
+            alert(json.errmsg+'\n'+'成功添加:'+'\n'+json.addurls+'\n'+'错误子域名:'+'\n'+json.errorurls+'\n'+'重复子域名:'+'\n'+json.checkurls);
         }
     })
 

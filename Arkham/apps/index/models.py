@@ -12,8 +12,8 @@ class WebUrls(Document):  # 默认的会在 mongodb 中的数据库创建一个�
     #子域名url
     urls = mongoengine.StringField(required=True)
     #网站状态
-    statecode = mongoengine.IntField(required=True, max_length=125)
-    state = mongoengine.BooleanField(required=True, max_length=125)
+    statecode = mongoengine.IntField(default=200)
+    state = mongoengine.BooleanField(default=True)
     #添加时间
     time = mongoengine.DateTimeField(default=timezone.now)
 
