@@ -13,7 +13,7 @@ function load() {
 
 function send(urls) {
     $.ajax({
-        "url" : "/add/",
+        "url" : "/addurls/",
         "type" : "post",
         "data" : urls,
         "dataType" : "json",

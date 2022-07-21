@@ -18,11 +18,13 @@ from django.urls import path, include
 import apps
 from apps.users import urls
 from apps.index import urls
+from apps.tools import urls
 
 
 urlpatterns = [
     #    path('admin/', admin.site.urls),
     path('', include(apps.users.urls)),
     path('', include(apps.index.urls)),
+    path('', include(apps.tools.urls)),
 
 ]

@@ -10,11 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 import djongo
 import mongoengine
 import django_redis
 from libs import email_config
+
+
 
 mingocon = mongoengine.connect('Acam', host='127.0.0.1', port=27017) #数据模型使用时调用连接
 
@@ -42,7 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.users.apps.UsersConfig'
+    'apps.users.apps.UsersConfig',
+    'django_filters',
+    'apps.index.apps.IndexConfig',
+    'apps.tools.apps.ToolsConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -256,3 +263,11 @@ EMAIL_HOST_PASSWORD = email_config.EMAIL_HOST_PASSWORD
 
 # login_required()装饰器，重定向到登录页面
 LOGIN_URL = '/login/'
+
+#添加django_filters过滤器
+REST_FRAMEWORK = {
+    # 全局过滤
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}

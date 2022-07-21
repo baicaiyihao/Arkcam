@@ -1,6 +1,7 @@
 import os
 from celery import Celery
 from Arkham import settings
+
 # 创建celery实例对象
 app = Celery("calery_tasks")
 
@@ -14,5 +15,5 @@ app.config_from_object("calery_tasks.config")
 # 加载任务
 # 参数必须必须是一个列表，里面的每一个任务都是任务的路径名称
 # app.autodiscover_tasks(["任务1","任务2"])
-app.autodiscover_tasks(["calery_tasks.sms","calery_tasks.sendMail"])
+app.autodiscover_tasks(["calery_tasks.sms","calery_tasks.sendMail","calery_tasks.saveurls"])
 

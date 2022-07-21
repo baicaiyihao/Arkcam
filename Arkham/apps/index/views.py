@@ -10,6 +10,8 @@ from django import http
 from django.views import View
 from apps.index.models import WebUrls
 from Arkham import settings
+from django.core.paginator import Paginator
+from calery_tasks.saveurls.tasks import save_urls
 
 #首页访问
 #LoginRequiredMixin用来校验是否登录，没有登陆都跳转登录页
@@ -28,49 +30,47 @@ class IndexView(LoginRequiredMixin,View):
                 return redirect(reverse('login'))
 
 
-#子域名管理接口
+#子域名管理添加urls接口
 class WebUrlView(LoginRequiredMixin,View):
     def post(self,request):
-        urls = json.loads(request.body)
-        #成功添加的url
-        addurls = []
-        #错误的url
+        body = json.loads(request.body)
+        urls = []
         errorurls = []
-        #重复的url
-        checkurls = []
         #判断输入的子域名是否符合格式
-        for i, j in urls.items():
+        for i, j in body.items():
             if j.isspace():
                 pass
             else:
                 #校验子域名格式
                 if re.match(r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?',j):
-                    try:
-                        # 校验子域名是否重复
-                        a = WebUrls.objects.get(urls=j)
-                        #记录重复的域名
-                        checkurls.append(j)
-                        pass
-                    except:
-                        urlsave(j)
-                        #记录成功添加的域名
-                        addurls.append(j)
+                    urls.append(j)
                 else:
                     #记录错误的子域名
                     errorurls.append(j)
-        errmsg = '添加成功，成功添加子域名'+str(len(addurls))+'个,错误格式子域名'+str(len(errorurls))+'个,重复子域名'+str(len(checkurls))+'个。'
-        return http.JsonResponse({'code': 200, 'errmsg': errmsg,'addurls':addurls,'errorurls':errorurls,'checkurls':checkurls})
+        return save_urls(urls,errorurls)
 
-#将子域名保存到数据库
-def urlsave(urls):
-    urlslist = []
-    try:
-        #取id的最大值然后新增时+1达到自增加的需求
-        urlsdata = WebUrls.objects.all()
-        for i in urlsdata:
-            urlslist.append(i.urid)
-        max_data = max(urlslist)
-        urlsdemo = WebUrls(urid=max_data+1,urls=urls)
-    except:
-        urlsdemo = WebUrls(urid=1,urls=urls)
-    urlsdemo.save()
+
+#子域名管理查询urls接口
+class seturlView(LoginRequiredMixin,View):
+    def get(self,request):
+        url = []
+        j = {}
+        id = 0
+        a = WebUrls.objects.all()
+        #按格式输出所有的子域名
+        for i in a:
+            id = id+1
+            j = {
+                'id':str(id),
+                'urls':i.urls,
+                'code':str(i.statecode),
+                'state':str(i.state),
+                'jointime':str(i.time),
+            }
+            url.append(j)
+        #利用Paginator分页器进行分页
+        limit = request.GET.get('limit')
+        page = request.GET.get('page')
+        outA = Paginator(url,limit)
+        outB = outA.page(page)
+        return http.JsonResponse({'code': 0,"msg": "","count": len(url),"data":outB.object_list})
